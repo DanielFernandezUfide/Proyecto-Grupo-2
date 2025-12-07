@@ -85,7 +85,7 @@ public class ProyectoGroupo2 {
                    VerCines(sala, filasSalas, columnasSalas, cantidadSalas);
                    break;
               case 2:
-
+                  ModificarCines(sala, filasSalas, columnasSalas, cantidadSalas);
                   break;
               case 3:
 
@@ -104,6 +104,8 @@ public class ProyectoGroupo2 {
         
         if (inicio){
             cantidadSalas = 2;
+        }else{
+            cantidadSalas = Integer.parseInt(JOptionPane.showInputDialog(""));
         }
         
         SalaDeCine sala[] = new SalaDeCine[cantidadSalas];
@@ -127,12 +129,12 @@ public class ProyectoGroupo2 {
    
    
    public static void VerCines(SalaDeCine[] sala, int filasSalas, int columnasSalas, int cantidadSalas){
-       while (true) {           
+       while (true) {   
             String listaSalas = "=======Salas de Cine=======";
             listaSalas += "\n";
 
             for (int i = 0; i < cantidadSalas; i++) {
-                listaSalas += "Sala " + (i+1) + " ";
+                listaSalas += "Sala " + (i+1) + ": ";
                 listaSalas += sala[i].getPelicula();
                 listaSalas += "\n";
              }
@@ -150,4 +152,36 @@ public class ProyectoGroupo2 {
        }
        
    }
+   
+   public static void ModificarCines(SalaDeCine[] sala, int filasSalas, int columnasSalas, int cantidadSalas){
+       String menu = "=======Salas Disponibles=======";
+       menu += "\n";
+       for (int i = 0; i < cantidadSalas; i++) {
+           menu += "Sala " + (i+1) + ": ";
+           menu += sala[i].getPelicula() + " " ;
+           menu += "cantidad de asientos: " + (sala[i].getSillas().length * sala[i].getSillas()[0].length);
+           menu += "\n";
+        }
+       menu += "Seleccione cual sala modificar.Ingrese \"-1\" para salir";
+       int seleccionSala = Integer.parseInt(JOptionPane.showInputDialog(menu));
+       menu = "¿Que desea modificar de la sala " + seleccionSala + "?";
+       menu += "\n";
+       menu += "1- Pelicula";
+       menu += "\n";
+       menu += "2- Cantidad de Sillas";
+       menu += "\n";
+       menu += "3- Menu anterior";
+       int seleccionModificar = Integer.parseInt(JOptionPane.showInputDialog(menu));
+       switch (seleccionModificar) {
+           case 1:
+               sala[(seleccionSala-1)].setPelicula(JOptionPane.showInputDialog("Ingrese el nombre de la pelicula"));
+               break;
+           case 2:
+               sala[(seleccionSala-1)].setSillas(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de filas")), Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de columnas")));
+               break;
+           case 3:
+               break;               
+       }
+   }
+   
 }
