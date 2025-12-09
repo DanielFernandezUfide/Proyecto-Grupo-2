@@ -32,6 +32,7 @@ public class SalaDeCine {
     }
 
     public void setSillas(int filasSillas, int columnasSillas) {
+        this.sillas = new String [filasSillas][columnasSillas];
         for (int i = 0; i < filasSillas; i++) {
             for (int j = 0; j < columnasSillas; j++) {
                 sillas[i][j] = "L";
@@ -57,17 +58,17 @@ public class SalaDeCine {
         sala += "        ___________ Pantalla";
         
         String letras = "ABCDEFGHIJKMNLOPQRSTUVWXYZ";
-        for (int i = 0; i < filasSillas; i++) {
+        for (int i = 0; i < this.sillas.length; i++) {
             sala += "\n";
             sala += letras.charAt(i) + "      ";
             
-            for (int j = 0; j < columnasSillas; j++) {
+            for (int j = 0; j < this.sillas[0].length; j++) {
                 sala += sillas[i][j] + "  ";    
             }
         }
         sala += "\n";
         sala += "        ";
-        for (int i = 0; i < columnasSillas; i++) {
+        for (int i = 0; i < this.sillas[0].length; i++) {
             sala += (i+1) + "  ";
         }
         

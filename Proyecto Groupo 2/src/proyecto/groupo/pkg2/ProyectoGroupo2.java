@@ -20,7 +20,8 @@ public class ProyectoGroupo2 {
         int filasSalas = 5;
         int columnasSalas = 6;
         int cantidadSalas = 2;
-        SalaDeCine[] sala = CrearCines(filasSalas, columnasSalas, true, cantidadSalas);
+        String pelicula = " ";
+        SalaDeCine[] sala = CrearCines(filasSalas, columnasSalas,cantidadSalas, pelicula);
         Menu(filasSalas,columnasSalas, cantidadSalas, sala);
     }
     
@@ -88,7 +89,8 @@ public class ProyectoGroupo2 {
                   ModificarCines(sala, filasSalas, columnasSalas, cantidadSalas);
                   break;
               case 3:
-
+                  NuevasSalasCine(sala, filasSalas, columnasSalas, cantidadSalas);
+                  cantidadSalas++;
                   break;
               case 4:
 
@@ -100,30 +102,22 @@ public class ProyectoGroupo2 {
     }   
    
    
-   public static SalaDeCine[] CrearCines(int filasSalas, int columnasSalas, boolean inicio, int cantidadSalas){
+   public static SalaDeCine[] CrearCines(int filasSalas, int columnasSalas, int cantidadSalas, String pelicula){
         
-        if (inicio){
-            cantidadSalas = 2;
-        }else{
-            cantidadSalas = Integer.parseInt(JOptionPane.showInputDialog(""));
-        }
+        SalaDeCine[] sala = new SalaDeCine[cantidadSalas + 100];
         
-        SalaDeCine sala[] = new SalaDeCine[cantidadSalas];
-        
-        if (inicio){
-            for (int i = 0; i < cantidadSalas; i++) {
-                switch (i){
-                    case 0:
-                        sala[i] = new SalaDeCine("Shrek 2", filasSalas, columnasSalas);
-                        sala[i].setSillas(filasSalas, columnasSalas);
-                        break;   
-                    case 1:
-                        sala[i] = new SalaDeCine("Alien", filasSalas, columnasSalas);
-                        sala[i].setSillas(filasSalas, columnasSalas);
-                        break;
+        for (int i = 0; i < cantidadSalas; i++) {
+            switch (i){
+                case 0:
+                 sala[i] = new SalaDeCine("Shrek 2", filasSalas, columnasSalas);
+                 sala[i].setSillas(filasSalas, columnasSalas);
+                 break;   
+                case 1:
+                 sala[i] = new SalaDeCine("Alien", filasSalas, columnasSalas);
+                 sala[i].setSillas(filasSalas, columnasSalas);
+                 break;
                 }
             }
-        }
         return sala;
     }
    
@@ -177,11 +171,32 @@ public class ProyectoGroupo2 {
                sala[(seleccionSala-1)].setPelicula(JOptionPane.showInputDialog("Ingrese el nombre de la pelicula"));
                break;
            case 2:
-               sala[(seleccionSala-1)].setSillas(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de filas")), Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de columnas")));
+               filasSalas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de filas"));
+               columnasSalas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de columnas"));
+               sala[(seleccionSala-1)].setSillas(filasSalas,columnasSalas);
                break;
            case 3:
                break;               
        }
    }
+   
+   
+  public static void NuevasSalasCine (SalaDeCine[] sala, int filasSalas, int columnasSalas, int cantidadSalas){
+    for (int i = 0; i < sala.length; i++) {
+        if (sala[i] == null) {
+
+            String pelicula = JOptionPane.showInputDialog("Ingrese el nombre de la pelicula");
+
+            int filas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de filas"));
+            int columnas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de columnas"));
+
+            sala[i] = new SalaDeCine(pelicula, filas, columnas);
+            sala[i].setSillas(filas, columnas);
+
+            break;
+        }
+    }
+}
+
    
 }
