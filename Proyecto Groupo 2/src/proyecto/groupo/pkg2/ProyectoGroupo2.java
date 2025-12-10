@@ -17,7 +17,7 @@ public class ProyectoGroupo2 {
      */
     public static void main(String[] args) {
         //Variables para empleados
-         Empleado[] empleados = LlenarEmpleados();
+        // Empleado[] empleados = LlenarEmpleados();
         //Variables para Cines
         int filasSalas = 5;
         int columnasSalas = 6;
@@ -27,6 +27,16 @@ public class ProyectoGroupo2 {
         Menu(filasSalas,columnasSalas, cantidadSalas, sala);
     }
     
+         // Datos
+    public static Empleado[] empleados = {
+        new Empleado( "Juan Sanchez", 1001),
+        new Empleado("Luis Perez", 1002),
+        new Empleado("Maria Rodriguez", 1003),
+        new Empleado("Carlos Lopez", 1004),
+        new Empleado("Sofia Martinez", 1005)
+    };
+    
+    /*
     public static Empleado[] LlenarEmpleados(){
         Empleado[] empleados = new Empleado[100];
         
@@ -36,6 +46,25 @@ public class ProyectoGroupo2 {
         
         return empleados;
     }
+*/
+    
+        public static Bebida[] bebidas = {
+        new Bebida(1, "Café normal"),
+        new Bebida(2, "Capuchino"),
+        new Bebida(3, "Capuchino con vainilla"),
+        new Bebida(4, "Chocolate"),
+        new Bebida(5, "Moka"),
+        new Bebida(6, "Te chai"),
+        new Bebida(7, "Café frío")
+    };
+
+    public static Clases[] reservasClases = new Clases[200];
+    public static int reservasCount = 0;
+
+    public static PedidoBarista[] ordenes = new PedidoBarista[200];
+    public static int ordenesCount = 0;
+
+    public static int CUPO_MAX = 30;
     
    public static void Menu (int filasSalas,int columnasSalas, int cantidadSalas, SalaDeCine[] sala) {
        while (true) {
@@ -62,10 +91,10 @@ public class ProyectoGroupo2 {
                    
                    break;
                case 3:
-                   
+                   menuClases();
                    break;
                case 4:
-                   
+                   menuClases();
                    break;
                case 5:
                    return;
@@ -240,6 +269,243 @@ public class ProyectoGroupo2 {
 
                 break;
         }
+    }
+    
+    //Menu clases
+    public static void menuClases() {
+        while (true) {
+            String opcion = JOptionPane.showInputDialog(
+                "Menú Clases:\n1. Reservar clase\n2. Listar reservas\n3. Liberar reserva\n4. Visualizar cupos\n0. Volver");
+            if (opcion == null || opcion.equals("0")) return;
+            if (opcion.equals("1")) {
+                reservarClase();
+            } else if (opcion.equals("2")) {
+                listarReservasClases();
+            } else if (opcion.equals("3")) {
+                liberarReservaClase();
+            } else if (opcion.equals("4")) {
+                visualizarClases();
+            } else {
+                JOptionPane.showMessageDialog(null, "Opción inválida");
+            }
+        }
+    }
+
+    public static void reservarClase() {
+        int idEmpleado = pedirIdEmpleado();
+        if (idEmpleado == -1) return;
+
+        String tipo = JOptionPane.showInputDialog("Digite tipo de clase (Baile/Yoga):");
+        if (tipo == null || tipo.equals("")) return;
+
+        String hora = JOptionPane.showInputDialog("Digite hora (ej: 10am):");
+        if (hora == null || hora.equals("")) return;
+
+        if (contarOcupadosClase(tipo, hora) >= CUPO_MAX) {
+            JOptionPane.showMessageDialog(null, "Cupo lleno");
+            return;
+        }
+
+        reservasClases[reservasCount] = new Clases(idEmpleado, tipo, hora);
+        reservasCount++;
+        JOptionPane.showMessageDialog(null, "Reserva creada para " + obtenerNombreEmpleado(idEmpleado));
+    }
+
+    public static void listarReservasClases() {
+        String lista = "Reservas:\n";
+        for (int i = 0; i < reservasCount; i++) {
+            Clases r = reservasClases[i];
+            if (r != null) {
+                lista = lista + r.getTipo() + " - " + r.getHora() + " - " +
+                        obtenerNombreEmpleado(r.getIdEmpleado()) + "\n";
+            }
+        }
+        JOptionPane.showMessageDialog(null, lista);
+    }
+
+    public static void liberarReservaClase() {
+        int idEmpleado = pedirIdEmpleado();
+        if (idEmpleado == -1) return;
+
+        for (int i = 0; i < reservasCount; i++) {
+            Clases r = reservasClases[i];
+            if (r != null && r.getIdEmpleado() == idEmpleado) {
+                reservasClases[i] = null;
+                JOptionPane.showMessageDialog(null, "Reserva liberada");
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "No se encontró reserva");
+    }
+
+    public static void visualizarClases() {
+        String tipo = JOptionPane.showInputDialog("Digite tipo de clase (Baile/Yoga):");
+        if (tipo == null || tipo.equals("")) return;
+        String hora = JOptionPane.showInputDialog("Digite hora:");
+        if (hora == null || hora.equals("")) return;
+        int ocupados = contarOcupadosClase(tipo, hora);
+        JOptionPane.showMessageDialog(null, "Ocupados: " + ocupados + "/" + CUPO_MAX);
+    }
+
+    public static int contarOcupadosClase(String tipo, String hora) {
+        int count = 0;
+        for (int i = 0; i < reservasCount; i++) {
+            Clases r = reservasClases[i];
+            if (r != null && r.getTipo().equals(tipo) && r.getHora().equals(hora)) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    // Menu bebidas
+    public static void menuBebidas() {
+        while (true) {
+            String opcion = JOptionPane.showInputDialog(
+                "Menú Bebidas:\n1. Crear orden\n2. Modificar orden\n3. Listar órdenes\n4. Anular orden\n0. Volver");
+            if (opcion == null || opcion.equals("0")) return;
+            if (opcion.equals("1")) {
+                crearOrden();
+            } else if (opcion.equals("2")) {
+                modificarOrden();
+            } else if (opcion.equals("3")) {
+                listarOrdenes();
+            } else if (opcion.equals("4")) {
+                anularOrden();
+            } else {
+                JOptionPane.showMessageDialog(null, "Opción inválida");
+            }
+        }
+    }
+
+    public static void crearOrden() {
+        
+        int idEmpleado = pedirIdEmpleado();
+        if (idEmpleado == -1) return;
+
+        if (tieneOrdenActiva(idEmpleado)) {
+            JOptionPane.showMessageDialog(null, "Ya tiene una orden activa");
+            return;
+        }
+
+        String nombreBebida = JOptionPane.showInputDialog("Digite nombre de bebida:");
+        if (nombreBebida == null || nombreBebida.equals("")) return;
+
+        int idBebida = obtenerIdBebida(nombreBebida);
+        if (idBebida == -1) {
+            JOptionPane.showMessageDialog(null, "Bebida no encontrada");
+            return;
+        }
+
+        ordenes[ordenesCount] = new PedidoBarista(idEmpleado, idBebida,"10:30am", true);
+        ordenesCount++;
+        JOptionPane.showMessageDialog(null, "Orden creada para " + obtenerNombreEmpleado(idEmpleado));
+    }
+
+    public static void modificarOrden() {
+        int idEmpleado = pedirIdEmpleado();
+        if (idEmpleado == -1) return;
+
+        int pos = buscarOrdenActiva(idEmpleado);
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "No tiene orden activa");
+            return;
+        }
+
+        String nuevaBebida = JOptionPane.showInputDialog("Digite nueva bebida:");
+        if (nuevaBebida == null || nuevaBebida.equals("")) return;
+
+        int idBebida = obtenerIdBebida(nuevaBebida);
+        if (idBebida == -1) {
+            JOptionPane.showMessageDialog(null, "Bebida no encontrada");
+            return;
+        }
+
+        ordenes[pos].setIdBebida(idBebida);
+        JOptionPane.showMessageDialog(null, "Orden modificada");
+    }
+
+    static void listarOrdenes() {
+        String lista = "Órdenes activas:\n";
+        for (int i = 0; i < ordenesCount; i++) {
+            PedidoBarista ob = ordenes[i];
+            if (ob != null && ob.isActiva()) {
+                String linea = obtenerNombreEmpleado(ob.getIdEmpleado()) + " - " +
+                               obtenerNombreBebida(ob.getIdBebida()) + "\n";
+                lista = lista + linea;
+            }
+        }
+        JOptionPane.showMessageDialog(null, lista);
+    }
+
+    static void anularOrden() {
+        int idEmpleado = pedirIdEmpleado();
+        if (idEmpleado == -1) return;
+
+        int pos = buscarOrdenActiva(idEmpleado);
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "No tiene orden activa");
+            return;
+        }
+
+        ordenes[pos].setActiva(false);
+        JOptionPane.showMessageDialog(null, "Orden anulada");
+    }
+
+    public static boolean tieneOrdenActiva(int idEmpleado) {
+        return buscarOrdenActiva(idEmpleado) != -1;
+    }
+
+    public static int buscarOrdenActiva(int idEmpleado) {
+        for (int i = 0; i < ordenesCount; i++) {
+            PedidoBarista ob = ordenes[i];
+            if (ob != null && ob.isActiva() && ob.getIdEmpleado() == idEmpleado) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    // metodoa
+    public static int pedirIdEmpleado() {
+        String input = JOptionPane.showInputDialog("Digite el ID del empleado:");
+        if (input == null) return -1;          
+        int id = Integer.parseInt(input);       
+
+        // Buscar si existe
+        for (int i = 0; i < empleados.length; i++) {
+            if (empleados[i] != null && empleados[i].getId() == id) {
+                return id;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Empleado no encontrado");
+        return -1;
+    }
+
+    public static String obtenerNombreEmpleado(int id) {
+        for (int i = 0; i < empleados.length; i++) {
+            if (empleados[i] != null && empleados[i].getId() == id) {
+                return empleados[i].getNombre();
+            }
+        }
+        return "Desconocido";
+    }
+
+    public static int obtenerIdBebida(String nombre) {
+        for (int i = 0; i < bebidas.length; i++) {
+            if (bebidas[i] != null && bebidas[i].getNombre().equals(nombre)) {
+                return bebidas[i].getId();
+            }
+        }
+        return -1;
+    }
+
+    public static String obtenerNombreBebida(int id) {
+        for (int i = 0; i < bebidas.length; i++) {
+            if (bebidas[i] != null && bebidas[i].getId() == id) {
+                return bebidas[i].getNombre();
+            }
+        }
+        return "Desconocida";
     }
 
 }
