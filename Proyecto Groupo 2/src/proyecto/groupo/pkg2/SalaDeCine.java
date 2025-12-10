@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 public class SalaDeCine {
     private String Pelicula;
     private String sillas [][];
+    private Empleado[][] empleados;
     
     public SalaDeCine(String Pelicula, int filasSillas, int columnasSillas) {
         this.Pelicula = Pelicula;
@@ -40,6 +41,17 @@ public class SalaDeCine {
         }
     }
 
+    public Empleado[][] getEmpleado() {
+        return empleados;
+    }
+
+    public void setEmpleado(Empleado[][] empleados, int filasSillas, int columnasSillas) {
+        this.empleados = new Empleado [filasSillas][columnasSillas];
+        
+    }
+
+
+    
     
     @Override
     public String toString() {
