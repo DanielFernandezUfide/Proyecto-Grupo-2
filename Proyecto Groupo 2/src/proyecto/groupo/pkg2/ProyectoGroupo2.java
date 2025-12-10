@@ -16,6 +16,8 @@ public class ProyectoGroupo2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        //Variables para empleados
+         Empleado[] empleados = LlenarEmpleados();
         //Variables para Cines
         int filasSalas = 5;
         int columnasSalas = 6;
@@ -25,7 +27,15 @@ public class ProyectoGroupo2 {
         Menu(filasSalas,columnasSalas, cantidadSalas, sala);
     }
     
-    
+    public static Empleado[] LlenarEmpleados(){
+        Empleado[] empleados = new Empleado[100];
+        
+        for (int i = 0; i < 100; i++) {
+            empleados[i].setId((int)(Math.random() * 10001));
+        }
+        
+        return empleados;
+    }
     
    public static void Menu (int filasSalas,int columnasSalas, int cantidadSalas, SalaDeCine[] sala) {
        while (true) {
@@ -198,5 +208,38 @@ public class ProyectoGroupo2 {
     }
 }
 
-   
+  public static void GestionReservacion(SalaDeCine[] sala, int filasSalas, int columnasSalas, int cantidadSalas){
+      String menu = "=======Gestion de reservaciones de cine=======";
+      menu += "\n";
+      menu += "1- Realizar reservación";
+      menu += "\n";
+      menu += "2- Cancelar Reservación";
+      menu += "\n";
+      menu += "3- Ver reservaciones";
+      menu += "\n";
+        menu += "4- Volver";
+        int seleccion = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        switch (seleccion) {
+            case 1:
+                menu = "Ingrese en cual sala realizar la reservación";
+                for (int i = 0; i < cantidadSalas; i++) {
+                    menu += "Sala " + (i + 1) + ": ";
+                    menu += sala[i].getPelicula() + " ";
+                    menu += "cantidad de asientos: " + (sala[i].getSillas().length * sala[i].getSillas()[0].length);
+                    menu += "\n";
+                }
+                
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+        }
+    }
+
 }
