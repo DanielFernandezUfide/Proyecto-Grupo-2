@@ -16,8 +16,6 @@ public class ProyectoGroupo2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //Variables para empleados
-        // Empleado[] empleados = LlenarEmpleados();
         //Variables para Cines
         int filasSalas = 5;
         int columnasSalas = 6;
@@ -28,6 +26,7 @@ public class ProyectoGroupo2 {
     }
     
          // Datos
+    
     public static Empleado[] empleados = {
         new Empleado( "Juan Sanchez", 1001),
         new Empleado("Luis Perez", 1002),
@@ -36,17 +35,10 @@ public class ProyectoGroupo2 {
         new Empleado("Sofia Martinez", 1005)
     };
     
-    /*
-    public static Empleado[] LlenarEmpleados(){
-        Empleado[] empleados = new Empleado[100];
-        
-        for (int i = 0; i < 100; i++) {
-            empleados[i].setId((int)(Math.random() * 10001));
-        }
-        
-        return empleados;
-    }
-*/
+    
+    
+   
+
     
         public static Bebida[] bebidas = {
         new Bebida(1, "Café normal"),
@@ -132,7 +124,7 @@ public class ProyectoGroupo2 {
                   cantidadSalas++;
                   break;
               case 4:
-
+                  GestionReservacion(sala, filasSalas, columnasSalas, cantidadSalas);
                   break;
               case 5:
                   return;
@@ -150,10 +142,12 @@ public class ProyectoGroupo2 {
                 case 0:
                  sala[i] = new SalaDeCine("Shrek 2", filasSalas, columnasSalas);
                  sala[i].setSillas(filasSalas, columnasSalas);
+                 sala[i].setEmpleado(filasSalas, columnasSalas);
                  break;   
                 case 1:
                  sala[i] = new SalaDeCine("Alien", filasSalas, columnasSalas);
                  sala[i].setSillas(filasSalas, columnasSalas);
+                 sala[i].setEmpleado(filasSalas, columnasSalas);
                  break;
                 }
             }
@@ -256,6 +250,25 @@ public class ProyectoGroupo2 {
                     menu += sala[i].getPelicula() + " ";
                     menu += "cantidad de asientos: " + (sala[i].getSillas().length * sala[i].getSillas()[0].length);
                     menu += "\n";
+                    seleccion = Integer.parseInt(JOptionPane.showInputDialog(menu));
+                    for (int j = 0; j < cantidadSalas; j++) {
+                        if (seleccion == (i+1)){
+                            menu = "Seleccione la fila del espacio a reservar";
+                            menu += "\n";
+                            menu += sala[i].MostrarCine(filasSalas, columnasSalas);
+                            String filaEspacio = JOptionPane.showInputDialog(menu);
+                            
+                            menu = "Fila seleccionada: " + filaEspacio;
+                            menu += "\n";
+                            menu += "Seleccione el espacio a reservar";
+                            menu += "\n";
+                            menu += sala[i].MostrarCine(filasSalas, columnasSalas);
+                            seleccion = Integer.parseInt(JOptionPane.showInputDialog(menu));
+                            int empleado = pedirIdEmpleado();
+                            sala[i].AsignarEmpleado(filaEspacio, seleccion, empleado);
+                            
+                        }
+                    }
                 }
                 
                 break;
