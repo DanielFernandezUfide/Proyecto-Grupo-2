@@ -33,10 +33,17 @@ public class SalaDeCine {
     }
 
     public void setSillas(int filasSillas, int columnasSillas) {
-        this.sillas = new String [filasSillas][columnasSillas];
+        
         for (int i = 0; i < filasSillas; i++) {
             for (int j = 0; j < columnasSillas; j++) {
-                sillas[i][j] = "L";
+                if (empleados == null){
+                    sillas[i][j] = "L";
+                }else if(empleados[i][j] == null){
+                    sillas[i][j] = "L"; 
+                }else{
+                    sillas[i][j] = "O";
+                }
+                
             }
         }
     }
@@ -45,7 +52,7 @@ public class SalaDeCine {
         return empleados;
     }
 
-    public void setEmpleado(Empleado[][] empleados, int filasSillas, int columnasSillas) {
+    public void setEmpleado(int filasSillas, int columnasSillas) {
         this.empleados = new Empleado [filasSillas][columnasSillas];
         
     }
@@ -60,7 +67,8 @@ public class SalaDeCine {
 
    
     
-    public void MostrarCine (int filasSillas, int columnasSillas) {
+    public String MostrarCine  (int filasSillas, int columnasSillas) {
+        setSillas(filasSillas, columnasSillas);
         String sala = "Pelicula: " + this.Pelicula;
         sala += "\n";
         sala += "L: Libre";
@@ -85,6 +93,24 @@ public class SalaDeCine {
         }
         
         JOptionPane.showMessageDialog(null, sala);
+        return sala;
     }
     
-}
+    public void AsignarEmpleado (String filaEspacio, int seleccion, int empleado){
+        this.empleados = new Empleado[sillas.length][sillas[0].length];
+        String letras = "ABCDEFGHIJKMNLOPQRSTUVWXYZ";
+        int seleccionFila = letras.indexOf(filaEspacio);
+        if (seleccionFila > sillas.length){
+                JOptionPane.showMessageDialog(null, "Seleccion invalida");
+                return;
+            }else{
+              empleados[seleccionFila][seleccion].setId(empleado);
+            }
+                    
+                    
+        
+            
+            
+        }
+    }
+
